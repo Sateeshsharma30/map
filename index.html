@@ -18,6 +18,7 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = [position.coords.latitude, position.coords.longitude];
+                console.log("User Location: ", userLocation);
 
                 var map = L.map('map').setView(userLocation, 13);
 
@@ -28,6 +29,21 @@
                 L.marker(userLocation).addTo(map)
                     .bindPopup('You are here!')
                     .openPopup();
+
+                var locations = [
+                    { lat: 23.233, lng: 77.450, name: 'Location A' },
+                    { lat: 23.300, lng: 77.500, name: 'Location B' },
+                    { lat: 23.400, lng: 77.550, name: 'Location C' }
+                ];
+
+                locations.forEach(function (location) {
+                    var marker = L.marker([location.lat, location.lng]).addTo(map)
+                        .bindPopup(location.name);
+
+                    var distance = map.distance(userLocation, [location.lat, location.lng]);
+                    console.log(`Distance from User to ${location.name}: ${distance} meters`);
+                });
+
             }, function () {
                 alert("Geolocation is not supported by this browser or permission denied.");
             });
